@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testapp-${DEPLOYMENT}
+  namespace: bluegreentest
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: testapp
+      color: ${DEPLOYMENT}
+  template:
+    metadata:
+      labels:
+        app: testapp
+        color: ${DEPLOYMENT}
+    spec:
+      containers:
+      - name: testapp-${DEPLOYMENT}
+        image: fblzs/bluegreenapp:${IMAGEVERSION}
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Test"
+        - name: ASPNETCORE_URLS
+          value: "http://+;"

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "testapp-svc"
+  namespace: "bluegreentest"
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 10.0.1.243
+  selector:
+    app: testapp
+    color: green
+  ports:
+  - protocol: "TCP"
+    port: 80
+    targetPort: 80
+    name: "http"

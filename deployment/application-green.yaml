@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testapp-green
+  namespace: bluegreentest
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: testapp
+      color: green
+  template:
+    metadata:
+      labels:
+        app: testapp
+        color: green
+    spec:
+      containers:
+      - name: testapp-green
+        image: fblzs/bluegreenapp:greenv1
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Test"
+        - name: ASPNETCORE_URLS
+          value: "http://+;"
+        livenessProbe:
+          httpGet:
+            path: /self
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 15
