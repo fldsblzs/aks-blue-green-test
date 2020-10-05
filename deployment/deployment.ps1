@@ -21,7 +21,7 @@ Param
     $IsDebug = $false
 )
 Begin {
-    Write-Output "Replacing tokens in deployment yaml manifests."
+    Write-Output "Blue-green deployment script."
     $newDeployment = "blue"
 }
  
@@ -90,6 +90,9 @@ Process {
 
     Write-Output "Overriding yaml file: $ServiceYamlFile"
     Set-Content -Path $ServiceYamlFile -Value $serviceYaml
+
+    ### Set up output variables for later tasks to consume
+    Write-Host "##vso[task.setvariable variable=newSlot;isOutput=true]$newDeployment"
 }
 End {
     Write-Host "Script finished!"
