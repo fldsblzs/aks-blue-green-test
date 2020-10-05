@@ -26,6 +26,7 @@ Begin {
     }
     
     $newDeployment = "blue"
+    $previousDeployment = "green"
 }
  
 Process {
@@ -33,6 +34,7 @@ Process {
     if ($CurrentDeployment.ToLowerInvariant() -match "blue") {
         Write-Output "The current deployment is in blue slot. New version will be deployed into green slot."
         $newDeployment = "green"
+        $previousDeployment = "blue"
     }
 
     if (!(Test-Path $ApplicationYamlFile)) {
@@ -91,6 +93,7 @@ Process {
 
     ### Set up output variables for later tasks to consume
     Write-Host "##vso[task.setvariable variable=newSlot;isOutput=true]$newDeployment"
+    Write-Host "##vso[task.setvariable variable=previousSlot;isOutput=true]$previousDeployment"
 }
 End {
     Write-Host "Script finished!"
