@@ -18,6 +18,13 @@ Param
 )
 Begin {
     Write-Output "Blue-green deployment script."
+
+    if ($IsDebug -eq $true) {
+        Write-Output "Current deployment: $CurrentDeployment"
+        Write-Output "Application manifest location: $ApplicationYamlFile"
+        Write-Output "Service manifest location: $ServiceYamlFile"
+    }
+    
     $newDeployment = "blue"
 }
  
