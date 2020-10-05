@@ -30,7 +30,7 @@ Begin {
  
 Process {
     ### Set new deployment configuration
-    if ($CurrentDeployment -eq "blue") {
+    if ($CurrentDeployment.ToLowerInvariant() -match "blue") {
         Write-Output "The current deployment is in blue slot. New version will be deployed into green slot."
         $newDeployment = "green"
     }
