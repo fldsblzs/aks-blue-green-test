@@ -6,10 +6,6 @@ Param
 
     [Parameter(Mandatory=$true)]
     [string]
-    $ImageVersion,
-
-    [Parameter(Mandatory=$true)]
-    [string]
     $ApplicationYamlFile,
 
     [Parameter(Mandatory=$true)]
@@ -51,12 +47,7 @@ Process {
         if ($currentLine -match "{{{DEPLOYMENT}}}") {
             $replaceCount++
             $applicationYaml[$i] = $currentLine -replace [regex]::Escape("{{{DEPLOYMENT}}}"), $newDeployment
-        }
-
-        if ($currentLine -match "{{{IMAGEVERSION}}}") {
-            $replaceCount++
-            $applicationYaml[$i] = $currentLine -replace [regex]::Escape("{{{IMAGEVERSION}}}"), $ImageVersion
-        }       
+        }     
     }
 
     Write-Output "Replaced $replaceCount tokens in $ApplicationYamlFile."
