@@ -10,7 +10,7 @@ spec:
   loadBalancerIP: 10.0.1.243
   selector:
     app: testapp
-    color: ${DEPLOYMENT}
+    color: {{{DEPLOYMENT}}}
   ports:
   - protocol: "TCP"
     port: 80
