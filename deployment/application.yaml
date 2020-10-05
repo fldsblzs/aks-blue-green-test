@@ -24,3 +24,17 @@ spec:
           value: "Test"
         - name: ASPNETCORE_URLS
           value: "http://+;"
+        livenessProbe:
+          httpGet:
+            path: /self
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 15
