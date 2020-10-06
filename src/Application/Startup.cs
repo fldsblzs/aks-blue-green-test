@@ -53,7 +53,7 @@ namespace Application
 
             app.UseHealthChecks("/health/live", new HealthCheckOptions
             {
-                Predicate = hcr => hcr.Name == "live"
+                Predicate = hcr => hcr.Name.Contains("live")
             });
             
             app.UseHealthChecks("/health/ready", new HealthCheckOptions
