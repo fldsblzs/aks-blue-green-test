@@ -38,7 +38,7 @@ spec:
             path: /health/ready
             port: 80
             scheme: HTTP
-          initialDelaySeconds: 10
+          initialDelaySeconds: 15
           periodSeconds: 15
           failureThreshold: 3
           successThreshold: 1
