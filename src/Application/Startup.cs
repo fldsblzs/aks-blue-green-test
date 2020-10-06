@@ -51,7 +51,7 @@ namespace Application
 
             app.UseAuthorization();
 
-            app.UseHealthChecks("/health/ready", new HealthCheckOptions
+            app.UseHealthChecks("/health/live", new HealthCheckOptions
             {
                 Predicate = hcr => hcr.Name == "live"
             });

@@ -26,15 +26,19 @@ spec:
           value: "http://+;"
         livenessProbe:
           httpGet:
-            path: /self
+            path: /health/live
             port: 80
             scheme: HTTP
-          initialDelaySeconds: 10
+          initialDelaySeconds: 15
           periodSeconds: 15
+          failureThreshold: 3
+          successThreshold: 1
         readinessProbe:
           httpGet:
-            path: /ready
+            path: /health/ready
             port: 80
             scheme: HTTP
           initialDelaySeconds: 10
           periodSeconds: 15
+          failureThreshold: 3
+          successThreshold: 1
