@@ -1,19 +1,19 @@
+using Application.Health;
 using Application.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
+using Serilog;
 
 namespace Application
 {
     public class Startup
     {
         private readonly IConfiguration _configuration;
-        
+
         public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -24,14 +24,14 @@ namespace Application
         {
             services.Configure<VersionOptions>(_configuration.GetSection("VersionOptions"));
 
+            services
+                .AddSingleton<LivenessCheck>()
+                .AddSingleton<ReadinessCheck>();
+
             services.AddHealthChecks()
-                .AddCheck("self", () => HealthCheckResult.Healthy())
-                .AddCheck("ready", () =>
-                {
-                    Task.Delay(5000);
-                    return HealthCheckResult.Healthy();
-                }, new[] {"services"});
-            
+                .AddCheck<LivenessCheck>("live")
+                .AddCheck<ReadinessCheck>("ready", tags: new[] {"readiness"});
+
             services.AddControllers();
         }
 
@@ -45,19 +45,22 @@ namespace Application
 
             app.UseHttpsRedirection();
 
+            app.UseSerilogRequestLogging();
+            
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.UseHealthChecks("/self", new HealthCheckOptions
+            app.UseHealthChecks("/health/ready", new HealthCheckOptions
             {
-                Predicate = hcr => hcr.Name.Contains("self")
-            });
-            app.UseHealthChecks("/ready", new HealthCheckOptions
-            {
-                Predicate = hcr => hcr.Tags.Contains("services")
+                Predicate = hcr => hcr.Name == "live"
             });
             
+            app.UseHealthChecks("/health/ready", new HealthCheckOptions
+            {
+                Predicate = hcr => hcr.Tags.Contains("readiness")
+            });
+
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
