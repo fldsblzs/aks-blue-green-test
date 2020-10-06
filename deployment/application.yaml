@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: testapp-{{{DEPLOYMENT}}}
-        image: fblzs/bluegreenapp:{{{DEPLOYMENT}}}v1
+        image: fblzs/bluegreenapp:{{{DEPLOYMENT}}}v2
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Test"
