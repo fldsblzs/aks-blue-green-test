@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: testapp-{{{DEPLOYMENT}}}
-        image: fblzs/bluegreenapp:{{{DEPLOYMENT}}}v3
+        image: fblzs/bluegreenapp:{{{DEPLOYMENT}}}v4
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Test"
@@ -42,3 +42,11 @@ spec:
           periodSeconds: 30
           failureThreshold: 3
           successThreshold: 1
+        volumeMounts:
+          - name: secrets
+            mountPath: "/app/secrets"
+            readOnly: true
+      volumes:
+        - name: secrets
+          secret:
+            secretName: testapp-secrets
